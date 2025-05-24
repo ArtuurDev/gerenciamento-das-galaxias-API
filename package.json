@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.8.2",
     "dotenv": "^16.5.0",
+    "nestjs-zod": "^4.3.1",
     "or": "^0.2.0",
     "prisma": "^6.8.2",
     "reflect-metadata": "^0.2.2",

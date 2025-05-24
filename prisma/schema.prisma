@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -13,51 +8,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Afiliacao {
+
+enum ManagerOf {
+  PLANET
+  STARSYSTEM
+  CHARACTER
+  SPACESHIP
+}
+
+enum Affiliation {
   JEDI
   SITH
-  REBELDE
+  REBEL
 }
 
-enum Fabricante {
+enum Manufacturer {
   JEDI
   SITH
-  REBELDE
+  REBEL
 }
 
-
-model Planeta {
-  id         String @id  @default(uuid()) 
-  nome       String
-  tipoDeClima      String   @map("tipo_de_clima")
-  tipoDeTerreno    String   @map("tipo_de_terreno")
-  populacao  Int
-
-  sistemaEstelar  SistemaEstelar @relation(fields: [sistemaEstelarId], references: [id])
-  sistemaEstelarId  String
+model Manager {
+  id        String @id() @default(uuid())
+  name      String @unique()
+  password  String
+  managerPermission ManagerPermission[]
 }
 
-model SistemaEstelar {
-  id String  @id @default(uuid())
-  nome  String 
-  descricao String
-  planetas   Planeta[]
+model ManagerPermission {
+  id         String      @id @default(uuid())
+  manager    Manager     @relation(fields: [managerId], references: [id])
+  managerId  String
+  managerOf  ManagerOf
 }
 
+model Planet {
+  id             String   @id @default(uuid())
+  name           String
+  climateType    String   
+  terrainType    String  
+  population     Int
 
-model Personagen {
-  id String @id @default(uuid())
-  nome String
-  raca  String
-  afiliacao  Afiliacao
+  starSystem     StarSystem @relation(fields: [starSystemId], references: [id])
+  starSystemId   String
 }
 
-model NaveEspacial {
-  id  String @id @default(uuid())
-  nome  String
-  modelo  String
-  fabricante  Fabricante
-  capacidadeDePassageiros Int  @map("capacidade_de_passageiros")
-
+model StarSystem {
+  id       String   @id @default(uuid())
+  name     String
+  description String
+  planets  Planet[]
 }
 
+model Character {
+  id         String     @id @default(uuid())
+  name       String     @unique()
+  species    String
+  affiliation Affiliation
+  homePlanet String
+}
+
+model Spaceship {
+  id                    String     @id @default(uuid())
+  name                  String
+  model                 String
+  manufacturer          String
+  passengerCapacity     Int        
+}

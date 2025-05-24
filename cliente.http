@@ -1,0 +1,9 @@
+POST http://localhost:3000/characters
+Content-Type: application/json
+
+{
+  "name": "Anakin Skywalker",
+  "species": "anakin@jedi.com",
+  "homePlanet": "terra",
+  "affiliation": "JEDI"
+}

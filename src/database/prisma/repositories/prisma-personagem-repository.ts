@@ -1,26 +1,51 @@
 import { Injectable } from "@nestjs/common";
-import { Prisma, Personagen } from "@prisma/client";
-import { PersonagemRepository } from "src/personagens/repositories/personagem-repository";
 import { PrismaService } from "../prisma.service";
+import { CharacterRepository } from "src/character/repositories/character-repository";
+import { Prisma, Character } from "@prisma/client";
 
 @Injectable()
-export class PrismaPersonagemRepository implements PersonagemRepository {
+export class PrismaCharacterRepository implements CharacterRepository {
 
-    constructor(private prismaService: PrismaService) {
+    constructor(private prismaService: PrismaService) {}
 
+    async create(data: Prisma.CharacterCreateInput): Promise<Character> {
+        return this.prismaService.character.create({
+            data
+        })
     }
 
-    async create(data: Prisma.PersonagenCreateInput): Promise<Personagen> {
-        throw new Error("Method not implemented.");
+    async getCharacterById(id: string): Promise<Character | null> {
+        return this.prismaService.character.findUnique({
+            where: {
+                id
+            }
+        })
     }
-    async getPersonagemById(id: string): Promise<Personagen | null> {
-        throw new Error("Method not implemented.");
+
+    async updateCharacterById(data: Partial<Character>, id: string): Promise<Character> {
+        return this.prismaService.character.update({
+            where: {
+                id
+            }, 
+            data
+        })
     }
-    async updatePersonagemById(id: string): Promise<Personagen> {
-        throw new Error("Method not implemented.");
+
+    async deleteCharacterById(id: string): Promise<any> {
+        return this.prismaService.character.delete({
+            where: {
+                id
+            }
+        })
     }
-    async deletePersonagemById(id: string): Promise<any> {
-        throw new Error("Method not implemented.");
+
+    async getCharacterByName(name: string): Promise<Character | null> {
+        return this.prismaService.character.findUnique({
+            where: {
+                name
+            }
+        })
     }
+    
 
 }
